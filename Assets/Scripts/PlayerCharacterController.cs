@@ -3,8 +3,10 @@ using System.Collections.Generic;
 using UnityEngine.InputSystem;
 using UnityEngine;
 
-public class TopDownCharacterController : MonoBehaviour
+public class PlayerCharacterController : MonoBehaviour
 {
+    public static PlayerCharacterController player;
+
     [Header("Movement Section")]
     public float speed;
     public bool canMove;
@@ -18,9 +20,23 @@ public class TopDownCharacterController : MonoBehaviour
     private Rigidbody2D rb;
 
     private Vector2 direction;
+    private Interactable currentInteractable;
+    private List<string> inventory = new List<string>();
+
+    public void SetCurrentInteractable(Interactable interactable)
+    {
+        currentInteractable = interactable;
+    }
+
+    public void AddToInventory(string interactableName)
+    {
+        inventory.Add(interactableName);
+        Debug.Log("Added " + interactableName + " to player inventory");
+    }
 
     private void Awake()
     {
+        player = this;
         animator = GetComponent<Animator>();
         rb = GetComponent<Rigidbody2D>();
         audioSource = GetComponent<AudioSource>();
@@ -84,5 +100,15 @@ public class TopDownCharacterController : MonoBehaviour
         }
     }
 
-    public void OnInteract(InputValue value) { }
+    public void OnInteract(InputValue value)
+    {
+        if (currentInteractable)
+        {
+            currentInteractable.Use();
+        }
+        else
+        {
+            Debug.Log("No current interactable");
+        }
+    }
 }

@@ -12559,6 +12559,48 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 598301594}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &606930569 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 2055102311959635369, guid: 99597c7b4aa47494fb2b6061505735da,
+    type: 3}
+  m_PrefabInstance: {fileID: 2055102312537850835}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &606930572
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 606930569}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a3552adaffdfbb140aea937ced22fae4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  radius: 1
+  playerTag: Player
+  dropName: Test Drop
+  interactableColor: {r: 0.9052129, g: 1, b: 0, a: 1}
+  fillColorSpeed: 0.3
+  fadeOutSpeed: 0.2
+  wobbleOffset: 0.2
+  wobbleSpeed: 0.5
+--- !u!58 &606930573
+CircleCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 606930569}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 0.484375}
+  serializedVersion: 2
+  m_Radius: 1
 --- !u!1001 &629713599
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -34303,10 +34345,30 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1177272032}
     m_Modifications:
+    - target: {fileID: 2055102311959635368, guid: 99597c7b4aa47494fb2b6061505735da,
+        type: 3}
+      propertyPath: m_Color.b
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2055102311959635368, guid: 99597c7b4aa47494fb2b6061505735da,
+        type: 3}
+      propertyPath: m_Color.g
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2055102311959635368, guid: 99597c7b4aa47494fb2b6061505735da,
+        type: 3}
+      propertyPath: m_Color.r
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 2055102311959635369, guid: 99597c7b4aa47494fb2b6061505735da,
         type: 3}
       propertyPath: m_Name
       value: PF Props Chest
+      objectReference: {fileID: 0}
+    - target: {fileID: 2055102311959635374, guid: 99597c7b4aa47494fb2b6061505735da,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2055102311959635375, guid: 99597c7b4aa47494fb2b6061505735da,
         type: 3}
@@ -35180,6 +35242,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5628018141983903119, guid: ef67ba864d1ecc042b5f4cf48455c0a6,
+        type: 3}
+      propertyPath: canMove
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8241794767769170671, guid: ef67ba864d1ecc042b5f4cf48455c0a6,
         type: 3}
