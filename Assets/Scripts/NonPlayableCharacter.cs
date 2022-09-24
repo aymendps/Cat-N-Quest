@@ -118,6 +118,9 @@ public class NonPlayableCharacter : Interactable
     public override void OnTriggerExit2D(Collider2D other)
     {
         base.OnTriggerExit2D(other);
-        spriteRenderer.sprite = activeNPCView.front;
+        if (other.tag == playerTag)
+        {
+            spriteRenderer.sprite = activeNPCView.front;
+        }
     }
 }

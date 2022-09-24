@@ -129,7 +129,7 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: TX Npc1 F
+      name: TX Npc1_S F
       rect:
         serializedVersion: 2
         x: 6
@@ -150,7 +150,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: TX Npc1 B
+      name: TX Npc1_S B
       rect:
         serializedVersion: 2
         x: 38
@@ -171,7 +171,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: TX Npc1 S
+      name: TX Npc1_S S
       rect:
         serializedVersion: 2
         x: 69
@@ -192,7 +192,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: TX Shadow Npc1
+      name: TX Shadow Npc1_S
       rect:
         serializedVersion: 2
         x: 99
@@ -223,10 +223,10 @@ TextureImporter:
     weights: []
     secondaryTextures: []
     nameFileIdTable:
-      TX Npc1 S: 2088270869
-      TX Npc1 F: -1748592876
-      TX Shadow Npc1: -164002085
-      TX Npc1 B: -1321431388
+      TX Npc1_S S: 2088270869
+      TX Npc1_S F: -1748592876
+      TX Npc1_S B: -1321431388
+      TX Shadow Npc1_S: -164002085
   spritePackingTag: 
   pSDRemoveMatte: 0
   pSDShowRemoveMatteOption: 0

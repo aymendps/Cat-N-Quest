@@ -42,12 +42,18 @@ public class QuestDrop : Interactable
     public override void OnTriggerEnter2D(Collider2D other)
     {
         base.OnTriggerEnter2D(other);
-        sr.DOColor(interactableColor, fillColorSpeed);
+        if (other.tag == playerTag)
+        {
+            sr.DOColor(interactableColor, fillColorSpeed);
+        }
     }
 
     public override void OnTriggerExit2D(Collider2D other)
     {
         base.OnTriggerExit2D(other);
-        sr.DOColor(initialColor, fillColorSpeed);
+        if (other.tag == playerTag)
+        {
+            sr.DOColor(initialColor, fillColorSpeed);
+        }
     }
 }
