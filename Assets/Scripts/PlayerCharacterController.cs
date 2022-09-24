@@ -18,7 +18,7 @@ public class PlayerCharacterController : MonoBehaviour
     private Animator animator;
     private AudioSource audioSource;
     private Rigidbody2D rb;
-
+    private int meowIndex;
     private Vector2 direction;
     private Interactable currentInteractable;
     private List<string> inventory = new List<string>();
@@ -41,6 +41,7 @@ public class PlayerCharacterController : MonoBehaviour
         rb = GetComponent<Rigidbody2D>();
         audioSource = GetComponent<AudioSource>();
         direction = Vector2.zero;
+        meowIndex = 0;
     }
 
     private void Update()
@@ -93,10 +94,8 @@ public class PlayerCharacterController : MonoBehaviour
     {
         if (!audioSource.isPlaying)
         {
-            audioSource.PlayOneShot(
-                meowSoundEffects[Random.Range(0, meowSoundEffects.Count)],
-                volume
-            );
+            audioSource.PlayOneShot(meowSoundEffects[meowIndex % meowSoundEffects.Count], volume);
+            meowIndex++;
         }
     }
 

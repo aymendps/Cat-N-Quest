@@ -5,6 +5,9 @@ using UnityEngine;
 [RequireComponent(typeof(CircleCollider2D))]
 public abstract class Interactable : MonoBehaviour
 {
+    [Header("Development Section")]
+    [TextArea]
+    public string devNotes;
     public float radius;
     public string playerTag = "Player";
 

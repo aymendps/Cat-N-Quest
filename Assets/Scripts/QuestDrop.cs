@@ -5,6 +5,7 @@ using DG.Tweening;
 
 public class QuestDrop : Interactable
 {
+    [Header("Quest Drop Configuration")]
     public string dropName;
     public Color interactableColor;
     public float fillColorSpeed = 0.3F;
