@@ -137,7 +137,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   speed: 3
   canMove: 1
-  volume: 0.5
+  volume: 0.3
   meowSoundEffects:
   - {fileID: 8300000, guid: e69ef124d7de4a74781e11d406ec7293, type: 3}
   - {fileID: 8300000, guid: a893fee031eb1754e84efb082d03d168, type: 3}
@@ -188,7 +188,7 @@ SpriteRenderer:
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 1
-  m_Size: {x: 0.65625, y: 1.4}
+  m_Size: {x: 0.65, y: 1.4}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
@@ -209,10 +209,10 @@ BoxCollider2D:
   m_UsedByComposite: 0
   m_Offset: {x: 0.0019779205, y: 0.2133249}
   m_SpriteTilingProperty:
-    border: {x: 0, y: 0.03125, z: 0, w: 0.9375}
+    border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0}
     oldSize: {x: 0.65625, y: 1.5}
-    newSize: {x: 0.65625, y: 1.4}
+    newSize: {x: 0.65, y: 1.4}
     adaptiveTilingThreshold: 0.5
     drawMode: 1
     adaptiveTiling: 0
