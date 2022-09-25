@@ -6,6 +6,8 @@ using DG.Tweening;
 public class QuestDrop : Interactable
 {
     [Header("Quest Drop Configuration")]
+    public Quest relatedQuest;
+    public int importantQuestStage;
     public string dropName;
     public Color interactableColor;
     public float fillColorSpeed = 0.3F;
@@ -23,26 +25,57 @@ public class QuestDrop : Interactable
         sequence.Append(transform.DOMoveY(transform.position.y + wobbleOffset, wobbleSpeed));
         sequence.Append(transform.DOMoveY(transform.position.y, wobbleSpeed));
         sequence.SetLoops(-1);
+        sequence.Pause();
         sr = GetComponent<SpriteRenderer>();
         initialColor = sr.color;
     }
 
     private void Start()
     {
-        sequence.Play();
+        if (isInteractable)
+        {
+            sequence.Play();
+        }
+    }
+
+    private void Update()
+    {
+        if (relatedQuest.GetCurrentStage() == importantQuestStage)
+        {
+            if (!isInteractable)
+            {
+                SetIsInteractable(true);
+                sequence.Play();
+            }
+        }
+        else
+        {
+            if (isInteractable)
+            {
+                SetIsInteractable(false);
+            }
+        }
     }
 
     public override void Use()
     {
-        PlayerCharacterController.player.AddToInventory(dropName);
-        transform.DOScale(Vector3.zero, fadeOutSpeed).OnComplete(() => gameObject.SetActive(false));
         Debug.Log("Interacted with " + gameObject.name);
+        PlayerCharacterController.player.AddToInventory(dropName);
+        relatedQuest.AdvanceToNextStage();
+        transform
+            .DOScale(Vector3.zero, fadeOutSpeed)
+            .OnComplete(() =>
+            {
+                transform.DOKill();
+                sequence.Kill();
+                Destroy(gameObject);
+            });
     }
 
     public override void OnTriggerEnter2D(Collider2D other)
     {
         base.OnTriggerEnter2D(other);
-        if (other.tag == playerTag)
+        if (other.tag == playerTag && isInteractable)
         {
             sr.DOColor(interactableColor, fillColorSpeed);
         }
@@ -51,7 +84,7 @@ public class QuestDrop : Interactable
     public override void OnTriggerExit2D(Collider2D other)
     {
         base.OnTriggerExit2D(other);
-        if (other.tag == playerTag)
+        if (other.tag == playerTag && isInteractable)
         {
             sr.DOColor(initialColor, fillColorSpeed);
         }

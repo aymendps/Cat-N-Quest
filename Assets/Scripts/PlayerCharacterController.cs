@@ -92,7 +92,7 @@ public class PlayerCharacterController : MonoBehaviour
 
     public void OnMeow(InputValue value)
     {
-        if (!audioSource.isPlaying)
+        if (!audioSource.isPlaying && canMove)
         {
             audioSource.PlayOneShot(meowSoundEffects[meowIndex % meowSoundEffects.Count], volume);
             meowIndex++;
@@ -101,13 +101,16 @@ public class PlayerCharacterController : MonoBehaviour
 
     public void OnInteract(InputValue value)
     {
-        if (currentInteractable)
+        if (canMove)
         {
-            currentInteractable.Use();
-        }
-        else
-        {
-            Debug.Log("No current interactable");
+            if (currentInteractable)
+            {
+                currentInteractable.Use();
+            }
+            else
+            {
+                Debug.Log("No current interactable");
+            }
         }
     }
 }

@@ -11,17 +11,25 @@ public abstract class Interactable : MonoBehaviour
     public float radius;
     public string playerTag = "Player";
 
+    [SerializeField]
+    protected bool isInteractable = true;
+
     private void OnValidate()
     {
         GetComponent<CircleCollider2D>().isTrigger = true;
         GetComponent<CircleCollider2D>().radius = radius;
     }
 
+    public void SetIsInteractable(bool isInteractable)
+    {
+        this.isInteractable = isInteractable;
+    }
+
     public abstract void Use();
 
     public virtual void OnTriggerEnter2D(Collider2D other)
     {
-        if (other.tag == playerTag)
+        if (other.tag == playerTag && isInteractable)
         {
             PlayerCharacterController.player.SetCurrentInteractable(this);
         }
@@ -29,7 +37,7 @@ public abstract class Interactable : MonoBehaviour
 
     public virtual void OnTriggerExit2D(Collider2D other)
     {
-        if (other.tag == playerTag)
+        if (other.tag == playerTag && isInteractable)
         {
             PlayerCharacterController.player.SetCurrentInteractable(null);
         }

@@ -2,19 +2,20 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+public enum NPCEmotion
+{
+    sad,
+    happy
+}
+
 public class NonPlayableCharacter : Interactable
 {
-    public enum DefaultNPCView
+    public enum View
     {
         front,
-        side,
+        lookRight,
+        lookLeft,
         back
-    }
-
-    public enum NPCEmotion
-    {
-        sad,
-        happy
     }
 
     [System.Serializable]
@@ -31,12 +32,14 @@ public class NonPlayableCharacter : Interactable
     public NPCView sadNPCView;
     public NPCView happyNPCView;
 
+    public View initialView;
+
     [Header("NPC Dialogue")]
     public float dialogueVolume;
 
     [TextArea]
     public string defaultSentence;
-    public AudioClip defaultSentenceClip;
+    public AudioClip defaultAudioClip;
 
     private NPCView activeNPCView;
     private AudioSource audioSource;
@@ -47,7 +50,7 @@ public class NonPlayableCharacter : Interactable
         audioSource = GetComponent<AudioSource>();
         spriteRenderer = GetComponent<SpriteRenderer>();
         SetActiveNPCView();
-        spriteRenderer.sprite = activeNPCView.front;
+        SetInitialView();
     }
 
     public void SetActiveNPCView()
@@ -64,9 +67,44 @@ public class NonPlayableCharacter : Interactable
         }
     }
 
-    public void SaySentence(string sentence, AudioClip audioClip)
+    private void SetInitialView()
+    {
+        switch (initialView)
+        {
+            case View.front:
+                spriteRenderer.sprite = activeNPCView.front;
+                break;
+
+            case View.lookRight:
+                spriteRenderer.sprite = activeNPCView.side;
+                spriteRenderer.flipX = true;
+                break;
+
+            case View.lookLeft:
+                spriteRenderer.sprite = activeNPCView.side;
+                break;
+
+            case View.back:
+                spriteRenderer.sprite = activeNPCView.back;
+                break;
+        }
+    }
+
+    public void ChangeEmotion(NPCEmotion emotion)
+    {
+        currentEmotion = emotion;
+        SetActiveNPCView();
+    }
+
+    public void SaySentence(string sentence)
     {
         Debug.Log("NPC " + NPCName + " says: '" + sentence + "'");
+    }
+
+    public void SaySentence(string sentence, AudioClip audioClip)
+    {
+        SaySentence(sentence);
+
         if (audioClip != null)
         {
             audioSource.PlayOneShot(audioClip, dialogueVolume);
@@ -76,7 +114,7 @@ public class NonPlayableCharacter : Interactable
     public void LookAtPlayer()
     {
         Vector2 vector = PlayerCharacterController.player.transform.position - transform.position;
-        if (Mathf.Abs(vector.x) > Mathf.Abs(vector.y) + 1)
+        if (Mathf.Abs(vector.x) > Mathf.Abs(vector.y) + 0.5)
         {
             if (vector.x > 0)
             {
@@ -112,7 +150,7 @@ public class NonPlayableCharacter : Interactable
     public override void Use()
     {
         LookAtPlayer();
-        SaySentence(defaultSentence, defaultSentenceClip);
+        SaySentence(defaultSentence, defaultAudioClip);
     }
 
     public override void OnTriggerExit2D(Collider2D other)
@@ -120,7 +158,7 @@ public class NonPlayableCharacter : Interactable
         base.OnTriggerExit2D(other);
         if (other.tag == playerTag)
         {
-            spriteRenderer.sprite = activeNPCView.front;
+            SetInitialView();
         }
     }
 }
