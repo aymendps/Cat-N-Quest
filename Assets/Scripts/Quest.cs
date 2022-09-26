@@ -2,6 +2,10 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+#if UNITY_EDITOR
+using UnityEditor;
+#endif
+
 [System.Serializable]
 public class Quest : MonoBehaviour
 {
@@ -15,34 +19,43 @@ public class Quest : MonoBehaviour
     }
 
     public string questName;
-    public GameObject questReward;
     public int numberOfStages;
     public List<Dialogue> dialogueList = new List<Dialogue>();
+    public bool hasQuestReward;
+
+    [HideInInspector]
+    public GameObject questReward;
+
+    [HideInInspector]
+    public NonPlayableCharacter rewardGiver;
+
+    [HideInInspector]
+    public Vector2 rewardPositionOffset;
 
     [HideInInspector]
     public bool isFinished = false;
 
     private int currentStage = 0;
 
-    private void OnValidate()
-    {
-        if (questReward != null)
-        {
-            QuestDrop drop = questReward.GetComponent<QuestDrop>();
-            if (drop == null)
-            {
-                questReward = null;
-                Debug.LogWarning(
-                    "Removed the selected quest reward because it did not have a 'Quest Drop' component"
-                );
-            }
-        }
-    }
-
     public void FinishQuest()
     {
-        Debug.Log("Finished Quest: " + questName);
-        isFinished = true;
+        if (!isFinished)
+        {
+            Debug.Log("Finished Quest: " + questName);
+            if (hasQuestReward)
+            {
+                Instantiate(
+                    questReward,
+                    rewardGiver.transform.position + (Vector3)rewardPositionOffset,
+                    Quaternion.identity
+                );
+            }
+            isFinished = true;
+        }
+        else
+        {
+            Debug.Log("Tried to finish a quest that is already done: '" + questName + "'");
+        }
     }
 
     public int GetCurrentStage()
@@ -106,3 +119,40 @@ public class Quest : MonoBehaviour
         StartCoroutine(DialogueSequence(list));
     }
 }
+
+#if UNITY_EDITOR
+[CustomEditor(typeof(Quest))]
+public class QuestEditor : Editor
+{
+    public override void OnInspectorGUI()
+    {
+        DrawDefaultInspector(); // for other non-HideInInspector fields
+
+        Quest script = (Quest)target;
+
+        if (script.hasQuestReward) // if bool is true, show other fields
+        {
+            script.questReward =
+                EditorGUILayout.ObjectField(
+                    "Quest Reward",
+                    script.questReward,
+                    typeof(GameObject),
+                    true
+                ) as GameObject;
+
+            script.rewardGiver =
+                EditorGUILayout.ObjectField(
+                    "Reward Giver",
+                    script.rewardGiver,
+                    typeof(NonPlayableCharacter),
+                    true
+                ) as NonPlayableCharacter;
+
+            script.rewardPositionOffset = EditorGUILayout.Vector2Field(
+                "Reward Position Offset",
+                script.rewardPositionOffset
+            );
+        }
+    }
+}
+#endif

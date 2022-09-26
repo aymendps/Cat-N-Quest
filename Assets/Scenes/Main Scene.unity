@@ -26752,7 +26752,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   questName: Some Quest
-  questReward: {fileID: 0}
   numberOfStages: 3
   dialogueList:
   - stageIndex: 0
@@ -26783,6 +26782,10 @@ MonoBehaviour:
     npc: {fileID: 2121866223}
     dialogue: Thank you!
     duration: 1
+  hasQuestReward: 0
+  questReward: {fileID: 0}
+  rewardGiver: {fileID: 0}
+  rewardPositionOffset: {x: 0, y: 0}
   isFinished: 0
 --- !u!4 &1390550239
 Transform:
@@ -36084,6 +36087,52 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 4609899911558002836}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &4609899911558002838 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 2055102311959635369, guid: e54d3c80cde4e314eae0912eca6a93ae,
+    type: 3}
+  m_PrefabInstance: {fileID: 4609899911558002836}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &4609899911558002839
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4609899911558002838}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c7941caf44093c64381499641de3351d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  devNotes: 
+  radius: 2
+  playerTag: Player
+  isInteractable: 1
+  actionName: Dig grave
+  actionType: 1
+  itemToDrop: {fileID: 0}
+  itemPositionOffset: {x: 0, y: 0}
+  textToShow: Grave drops something
+  hasAudio: 0
+  audioClip: {fileID: 0}
+  volume: 0
+--- !u!58 &4609899911558002840
+CircleCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4609899911558002838}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 0.890625}
+  serializedVersion: 2
+  m_Radius: 2
 --- !u!1001 &4932694540927913974
 PrefabInstance:
   m_ObjectHideFlags: 0
