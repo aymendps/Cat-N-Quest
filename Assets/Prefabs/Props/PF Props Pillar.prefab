@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 7947911505737750448}
   - component: {fileID: 7947911505737750450}
   - component: {fileID: 2393967728453671181}
-  - component: {fileID: -298187370595969191}
+  - component: {fileID: 6487841048352138423}
   m_Layer: 20
   m_Name: PF Props Pillar
   m_TagString: Untagged
@@ -113,7 +113,7 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 0.93092084, y: 0.6689366}
   m_EdgeRadius: 0
---- !u!114 &-298187370595969191
+--- !u!114 &6487841048352138423
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -122,12 +122,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 7947911505737750455}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1e3fdca004f2d45fe8abbed571a8abd5, type: 3}
+  m_Script: {fileID: 11500000, guid: 35e95dc5ff2b64380880dd7ac5922847, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_OverrideArea: 1
+  m_Size: {x: 1.0189141, y: 1.0241647, z: 4}
+  m_Center: {x: -0.034663618, y: 0.39338374, z: 0}
   m_Area: 1
-  m_IgnoreFromBuild: 0
   m_AffectedAgents: ffffffff
 --- !u!1 &7947911505844789836
 GameObject:
