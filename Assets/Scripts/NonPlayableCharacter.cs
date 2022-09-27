@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using UnityEngine.AI;
 using UnityEngine;
 
 public enum NPCEmotion
@@ -41,9 +42,17 @@ public class NonPlayableCharacter : Interactable
     public string defaultSentence;
     public AudioClip defaultAudioClip;
 
+    [Header("NPC AI")]
+    public NavMeshAgent navMeshAgent;
+    public bool hasMovementRoutine;
+    public List<Vector2> positionsInOrder = new List<Vector2>();
+    public float timeBetweenPositions;
+
     private NPCView activeNPCView;
     private AudioSource audioSource;
     private SpriteRenderer spriteRenderer;
+    private bool canMove = false;
+    private int routinePositionIndex = 0;
 
     public void Awake()
     {
@@ -51,6 +60,13 @@ public class NonPlayableCharacter : Interactable
         spriteRenderer = GetComponent<SpriteRenderer>();
         SetActiveNPCView();
         SetInitialView();
+        StartMovementRoutine();
+    }
+
+    public void Update()
+    {
+        transform.position = navMeshAgent.transform.position;
+        UpdateMovementRoutine();
     }
 
     public void SetActiveNPCView()
@@ -147,8 +163,80 @@ public class NonPlayableCharacter : Interactable
         );
     }
 
+    public void LookAtPlayer(Vector2 velocity)
+    {
+        if (Mathf.Abs(velocity.x) > Mathf.Abs(velocity.y) + 0.5)
+        {
+            if (velocity.x > 0)
+            {
+                spriteRenderer.flipX = true;
+            }
+            else
+            {
+                spriteRenderer.flipX = false;
+            }
+            spriteRenderer.sprite = activeNPCView.side;
+        }
+        else
+        {
+            if (velocity.y > 0)
+            {
+                spriteRenderer.sprite = activeNPCView.back;
+            }
+            else
+            {
+                spriteRenderer.sprite = activeNPCView.front;
+            }
+            spriteRenderer.flipX = false;
+        }
+
+        Debug.DrawLine(transform.position, transform.position + (Vector3)velocity, Color.blue);
+    }
+
+    IEnumerator MovementRoutine()
+    {
+        yield return new WaitForSeconds(timeBetweenPositions);
+
+        if (canMove)
+        {
+            navMeshAgent.isStopped = false;
+            navMeshAgent.SetDestination((Vector3)positionsInOrder[routinePositionIndex]);
+        }
+    }
+
+    public void StartMovementRoutine()
+    {
+        if (hasMovementRoutine && navMeshAgent != null)
+        {
+            canMove = true;
+            StartCoroutine(MovementRoutine());
+        }
+    }
+
+    public void UpdateMovementRoutine()
+    {
+        if (canMove)
+        {
+            LookAtPlayer(navMeshAgent.velocity);
+
+            if (
+                Vector2.Distance(transform.position, positionsInOrder[routinePositionIndex]) <= 0.2F
+            )
+            {
+                routinePositionIndex++;
+                if (routinePositionIndex >= positionsInOrder.Count)
+                {
+                    routinePositionIndex = 0;
+                }
+                StartCoroutine(MovementRoutine());
+            }
+        }
+    }
+
     public override void Use()
     {
+        navMeshAgent.isStopped = true;
+        canMove = false;
         LookAtPlayer();
         SaySentence(defaultSentence, defaultAudioClip);
     }
@@ -159,6 +247,8 @@ public class NonPlayableCharacter : Interactable
         if (other.tag == playerTag)
         {
             SetInitialView();
+            canMove = true;
+            StartCoroutine(MovementRoutine());
         }
     }
 }

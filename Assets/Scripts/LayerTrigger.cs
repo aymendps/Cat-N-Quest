@@ -9,9 +9,13 @@ public class LayerTrigger : MonoBehaviour
     public string layer;
     public string sortingLayer;
 
-    private void OnTriggerExit2D(Collider2D other)
-    {
+    IEnumerator ChangeLayer(Collider2D other) {
+
         other.gameObject.layer = LayerMask.NameToLayer(layer);
+
+        if(other.gameObject.tag != "Player") {
+            yield return new WaitForSeconds(0.3F);
+        }
 
         other.gameObject.GetComponent<SpriteRenderer>().sortingLayerName = sortingLayer;
         SpriteRenderer[] srs = other.gameObject.GetComponentsInChildren<SpriteRenderer>();
@@ -19,5 +23,10 @@ public class LayerTrigger : MonoBehaviour
         {
             sr.sortingLayerName = sortingLayer;
         }
+    }
+
+    private void OnTriggerExit2D(Collider2D other)
+    {
+        StartCoroutine(ChangeLayer(other));
     }
 }
