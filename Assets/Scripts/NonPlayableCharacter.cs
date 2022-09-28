@@ -52,6 +52,7 @@ public class NonPlayableCharacter : Interactable
     private AudioSource audioSource;
     private SpriteRenderer spriteRenderer;
     private bool canMove = false;
+    private Coroutine movementRoutine = null;
     private int routinePositionIndex = 0;
 
     public void Awake()
@@ -60,12 +61,15 @@ public class NonPlayableCharacter : Interactable
         spriteRenderer = GetComponent<SpriteRenderer>();
         SetActiveNPCView();
         SetInitialView();
+    }
+
+    public void Start()
+    {
         StartMovementRoutine();
     }
 
     public void Update()
     {
-        transform.position = navMeshAgent.transform.position;
         UpdateMovementRoutine();
     }
 
@@ -209,14 +213,15 @@ public class NonPlayableCharacter : Interactable
         if (hasMovementRoutine && navMeshAgent != null)
         {
             canMove = true;
-            StartCoroutine(MovementRoutine());
+            movementRoutine = StartCoroutine(MovementRoutine());
         }
     }
 
     public void UpdateMovementRoutine()
     {
-        if (canMove)
+        if (canMove && hasMovementRoutine)
         {
+            transform.position = navMeshAgent.transform.position;
             LookAtPlayer(navMeshAgent.velocity);
 
             if (
@@ -228,15 +233,25 @@ public class NonPlayableCharacter : Interactable
                 {
                     routinePositionIndex = 0;
                 }
-                StartCoroutine(MovementRoutine());
+
+                if (movementRoutine != null)
+                {
+                    StopCoroutine(movementRoutine);
+                }
+
+                movementRoutine = StartCoroutine(MovementRoutine());
             }
         }
     }
 
     public override void Use()
     {
-        navMeshAgent.isStopped = true;
-        canMove = false;
+        if (hasMovementRoutine)
+        {
+            navMeshAgent.isStopped = true;
+            canMove = false;
+        }
+
         LookAtPlayer();
         SaySentence(defaultSentence, defaultAudioClip);
     }
@@ -247,8 +262,18 @@ public class NonPlayableCharacter : Interactable
         if (other.tag == playerTag)
         {
             SetInitialView();
-            canMove = true;
-            StartCoroutine(MovementRoutine());
+
+            if (hasMovementRoutine)
+            {
+                canMove = true;
+            }
+
+            if (movementRoutine != null)
+            {
+                StopCoroutine(movementRoutine);
+            }
+
+            movementRoutine = StartCoroutine(MovementRoutine());
         }
     }
 }

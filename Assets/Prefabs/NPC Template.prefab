@@ -163,7 +163,7 @@ MonoBehaviour:
   - {x: 7, y: 4}
   - {x: 6, y: 13}
   - {x: 1, y: 13}
-  timeBetweenPositions: 3
+  timeBetweenPositions: 7
 --- !u!212 &8235805491412573471
 SpriteRenderer:
   m_ObjectHideFlags: 0
