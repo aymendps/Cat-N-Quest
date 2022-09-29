@@ -19,9 +19,17 @@ public class Quest : MonoBehaviour
         public float duration;
     }
 
+    [System.Serializable]
+    public struct QuestStageDrop
+    {
+        public string questDropName;
+        public int questStage;
+    }
+
     public string questName;
     public int numberOfStages;
     public List<Dialogue> dialogueList = new List<Dialogue>();
+    public List<QuestStageDrop> requiredQuestDrops = new List<QuestStageDrop>();
     public bool hasQuestReward;
 
     [HideInInspector]
@@ -71,6 +79,22 @@ public class Quest : MonoBehaviour
     public int GetCurrentStage()
     {
         return currentStage;
+    }
+
+    public bool PlayerHasRequiredDrops()
+    {
+        List<QuestStageDrop> requiredDrops = requiredQuestDrops.FindAll(
+            d => d.questStage == currentStage
+        );
+
+        foreach (QuestStageDrop q in requiredDrops)
+        {
+            if (!PlayerCharacterController.player.isInInventory(q.questDropName))
+            {
+                return false;
+            }
+        }
+        return true;
     }
 
     public void AdvanceToNextStage()
