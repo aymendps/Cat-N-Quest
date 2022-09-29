@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine.AI;
 using UnityEngine;
+using TMPro;
 
 public enum NPCEmotion
 {
@@ -29,6 +30,7 @@ public class NonPlayableCharacter : Interactable
 
     [Header("NPC Profile")]
     public string NPCName;
+    public TextMesh textMesh;
     public NPCEmotion currentEmotion;
     public NPCView sadNPCView;
     public NPCView happyNPCView;
@@ -44,7 +46,7 @@ public class NonPlayableCharacter : Interactable
 
     [Header("NPC AI")]
     public NavMeshAgent navMeshAgent;
-    public bool hasMovementRoutine;
+    public bool startMovementRoutine;
     public List<Vector2> positionsInOrder = new List<Vector2>();
     public float timeBetweenPositions;
 
@@ -59,13 +61,17 @@ public class NonPlayableCharacter : Interactable
     {
         audioSource = GetComponent<AudioSource>();
         spriteRenderer = GetComponent<SpriteRenderer>();
+        textMesh.text = NPCName;
         SetActiveNPCView();
         SetInitialView();
     }
 
     public void Start()
     {
-        StartMovementRoutine();
+        if (startMovementRoutine)
+        {
+            StartMovementRoutine();
+        }
     }
 
     public void Update()
@@ -119,6 +125,7 @@ public class NonPlayableCharacter : Interactable
     public void SaySentence(string sentence)
     {
         Debug.Log("NPC " + NPCName + " says: '" + sentence + "'");
+        DialogueUI.instance.ShowDialogue(NPCName, sentence);
     }
 
     public void SaySentence(string sentence, AudioClip audioClip)
@@ -167,7 +174,7 @@ public class NonPlayableCharacter : Interactable
         );
     }
 
-    public void LookAtPlayer(Vector2 velocity)
+    public void LookAtDirection(Vector2 velocity)
     {
         if (Mathf.Abs(velocity.x) > Mathf.Abs(velocity.y) + 0.5)
         {
@@ -210,8 +217,9 @@ public class NonPlayableCharacter : Interactable
 
     public void StartMovementRoutine()
     {
-        if (hasMovementRoutine && navMeshAgent != null)
+        if (positionsInOrder.Count != 0 && navMeshAgent != null)
         {
+            startMovementRoutine = true;
             canMove = true;
             movementRoutine = StartCoroutine(MovementRoutine());
         }
@@ -219,10 +227,17 @@ public class NonPlayableCharacter : Interactable
 
     public void UpdateMovementRoutine()
     {
-        if (canMove && hasMovementRoutine)
+        if (navMeshAgent)
         {
             transform.position = navMeshAgent.transform.position;
-            LookAtPlayer(navMeshAgent.velocity);
+        }
+
+        if (canMove && startMovementRoutine)
+        {
+            if (navMeshAgent.velocity != Vector3.zero)
+            {
+                LookAtDirection(navMeshAgent.velocity);
+            }
 
             if (
                 Vector2.Distance(transform.position, positionsInOrder[routinePositionIndex]) <= 0.2F
@@ -246,14 +261,29 @@ public class NonPlayableCharacter : Interactable
 
     public override void Use()
     {
-        if (hasMovementRoutine)
+        if (startMovementRoutine)
         {
             navMeshAgent.isStopped = true;
             canMove = false;
+
+            if (movementRoutine != null)
+            {
+                StopCoroutine(movementRoutine);
+            }
         }
 
         LookAtPlayer();
         SaySentence(defaultSentence, defaultAudioClip);
+    }
+
+    public override void OnTriggerEnter2D(Collider2D other)
+    {
+        base.OnTriggerEnter2D(other);
+
+        if (other.tag == playerTag)
+        {
+            StartCoroutine(Fading.FadeInText(0.3f, textMesh));
+        }
     }
 
     public override void OnTriggerExit2D(Collider2D other)
@@ -263,17 +293,21 @@ public class NonPlayableCharacter : Interactable
         {
             SetInitialView();
 
-            if (hasMovementRoutine)
+            StartCoroutine(Fading.FadeOutText(0.3f, textMesh));
+
+            DialogueUI.instance.HideDialogue();
+
+            if (startMovementRoutine)
             {
                 canMove = true;
-            }
 
-            if (movementRoutine != null)
-            {
-                StopCoroutine(movementRoutine);
-            }
+                if (movementRoutine != null)
+                {
+                    StopCoroutine(movementRoutine);
+                }
 
-            movementRoutine = StartCoroutine(MovementRoutine());
+                movementRoutine = StartCoroutine(MovementRoutine());
+            }
         }
     }
 }

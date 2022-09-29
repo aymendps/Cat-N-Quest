@@ -15,6 +15,7 @@ public class Quest : MonoBehaviour
         public int stageIndex;
         public NonPlayableCharacter npc;
         public string dialogue;
+        public bool sayWhileWaiting;
         public float duration;
     }
 
@@ -42,6 +43,15 @@ public class Quest : MonoBehaviour
         if (!isFinished)
         {
             Debug.Log("Finished Quest: " + questName);
+
+            foreach (Dialogue d in dialogueList)
+            {
+                if (!d.npc.startMovementRoutine)
+                {
+                    d.npc.StartMovementRoutine();
+                }
+            }
+
             if (hasQuestReward)
             {
                 Instantiate(
@@ -84,7 +94,7 @@ public class Quest : MonoBehaviour
     {
         foreach (Dialogue d in dialogueList)
         {
-            if (d.npc == npc && d.stageIndex == currentStage)
+            if (d.npc == npc && d.stageIndex == currentStage && d.sayWhileWaiting)
             {
                 npc.LookAtPlayer();
                 npc.SaySentence(d.dialogue);
@@ -103,12 +113,17 @@ public class Quest : MonoBehaviour
                 {
                     d.npc.ChangeEmotion(NPCEmotion.happy);
                 }
-                d.npc.LookAtPlayer();
-                d.npc.SaySentence(d.dialogue);
-                yield return new WaitForSeconds(d.duration);
+
+                if (!d.sayWhileWaiting)
+                {
+                    d.npc.LookAtPlayer();
+                    d.npc.SaySentence(d.dialogue);
+                    yield return new WaitForSeconds(d.duration);
+                }
             }
             AdvanceToNextStage();
         }
+        DialogueUI.instance.HideDialogue();
         PlayerCharacterController.player.canMove = true;
     }
 

@@ -9,12 +9,13 @@ using UnityEditor;
 public enum PropsActionType
 {
     dropItem,
-    showText
+    showAdditionalText
 }
 
 public class PropsAction : Interactable
 {
     public string actionName;
+    public string actionSentence;
     public PropsActionType actionType;
 
     [HideInInspector]
@@ -51,7 +52,7 @@ public class PropsAction : Interactable
         );
     }
 
-    private void ShowText()
+    private void ShowAdditionalText()
     {
         Debug.Log(textToShow);
     }
@@ -64,8 +65,8 @@ public class PropsAction : Interactable
                 DropItem();
                 break;
 
-            case PropsActionType.showText:
-                ShowText();
+            case PropsActionType.showAdditionalText:
+                ShowAdditionalText();
                 break;
         }
     }
@@ -78,6 +79,13 @@ public class PropsAction : Interactable
         {
             Debug.Log("Props Interactable: " + actionName);
         }
+    }
+
+    public override void OnTriggerExit2D(Collider2D other)
+    {
+        base.OnTriggerExit2D(other);
+
+        if (other.tag == playerTag && isInteractable) { }
     }
 }
 
@@ -108,7 +116,7 @@ public class PropsActionEditor : Editor
                 );
                 break;
 
-            case PropsActionType.showText:
+            case PropsActionType.showAdditionalText:
 
                 EditorGUILayout.LabelField("Text");
                 script.textToShow = EditorGUILayout.TextArea(
