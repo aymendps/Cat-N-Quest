@@ -6,28 +6,28 @@ using DG.Tweening;
 public class QuestDrop : Interactable
 {
     [Header("Quest Drop Configuration")]
-    public Quest relatedQuest;
-    public int importantQuestStage;
     public string dropName;
-    public Color interactableColor;
-    public float fillColorSpeed = 0.3F;
-    public float fadeOutSpeed = 0.2F;
+    public SpriteRenderer spriteRenderer;
     public float wobbleOffset = 0.2F;
     public float wobbleSpeed = 0.5F;
 
     private Sequence sequence;
-    private SpriteRenderer sr;
-    private Color initialColor;
+    private string pickUpSentence = "E- Pick up";
 
     private void Awake()
     {
         sequence = DOTween.Sequence();
-        sequence.Append(transform.DOMoveY(transform.position.y + wobbleOffset, wobbleSpeed));
-        sequence.Append(transform.DOMoveY(transform.position.y, wobbleSpeed));
+        sequence.Append(
+            spriteRenderer.transform.DOMoveY(
+                spriteRenderer.transform.position.y + wobbleOffset,
+                wobbleSpeed
+            )
+        );
+        sequence.Append(
+            spriteRenderer.transform.DOMoveY(spriteRenderer.transform.position.y, wobbleSpeed)
+        );
         sequence.SetLoops(-1);
         sequence.Pause();
-        sr = GetComponent<SpriteRenderer>();
-        initialColor = sr.color;
     }
 
     private void Start()
@@ -38,38 +38,12 @@ public class QuestDrop : Interactable
         }
     }
 
-    private void Update()
-    {
-        if (relatedQuest.GetCurrentStage() == importantQuestStage)
-        {
-            if (!isInteractable)
-            {
-                SetIsInteractable(true);
-                sequence.Play();
-            }
-        }
-        else
-        {
-            if (isInteractable)
-            {
-                SetIsInteractable(false);
-            }
-        }
-    }
-
     public override void Use()
     {
-        Debug.Log("Interacted with " + gameObject.name);
+        // Debug.Log("Interacted with " + gameObject.name);
         PlayerCharacterController.player.AddToInventory(dropName);
-        relatedQuest.AdvanceToNextStage();
-        transform
-            .DOScale(Vector3.zero, fadeOutSpeed)
-            .OnComplete(() =>
-            {
-                transform.DOKill();
-                sequence.Kill();
-                Destroy(gameObject);
-            });
+        sequence.Kill();
+        Destroy(gameObject);
     }
 
     public override void OnTriggerEnter2D(Collider2D other)
@@ -77,7 +51,7 @@ public class QuestDrop : Interactable
         base.OnTriggerEnter2D(other);
         if (other.tag == playerTag && isInteractable)
         {
-            sr.DOColor(interactableColor, fillColorSpeed);
+            DialogueUI.instance.ShowDialogue(dropName, pickUpSentence);
         }
     }
 
@@ -86,7 +60,7 @@ public class QuestDrop : Interactable
         base.OnTriggerExit2D(other);
         if (other.tag == playerTag && isInteractable)
         {
-            sr.DOColor(initialColor, fillColorSpeed);
+            DialogueUI.instance.HideDialogue();
         }
     }
 }

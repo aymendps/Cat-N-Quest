@@ -34,6 +34,17 @@ public class PlayerCharacterController : MonoBehaviour
         Debug.Log("Added " + interactableName + " to player inventory");
     }
 
+    public void RemoveFromInventory(string interactableName)
+    {
+        inventory.Remove(interactableName);
+        Debug.Log("Removed " + interactableName + " from player inventory");
+    }
+
+    public bool isInInventory(string interactableName)
+    {
+        return inventory.Contains(interactableName);
+    }
+
     private void Awake()
     {
         player = this;

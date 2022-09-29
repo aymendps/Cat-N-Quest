@@ -124,7 +124,7 @@ public class NonPlayableCharacter : Interactable
 
     public void SaySentence(string sentence)
     {
-        Debug.Log("NPC " + NPCName + " says: '" + sentence + "'");
+        // Debug.Log("NPC " + NPCName + " says: '" + sentence + "'");
         DialogueUI.instance.ShowDialogue(NPCName, sentence);
     }
 

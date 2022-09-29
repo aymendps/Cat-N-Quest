@@ -18,8 +18,9 @@ public class NonPlayableCharacterWithQuest : NonPlayableCharacter
         else
         {
             bool shouldStartQuest = importantQuestStages.Contains(quest.GetCurrentStage());
+            bool hasRequiredDrops = quest.PlayerHasRequiredDrops();
 
-            if (shouldStartQuest)
+            if (shouldStartQuest && hasRequiredDrops)
             {
                 importantQuestStages.Remove(quest.GetCurrentStage());
                 quest.StartQuestStage();
