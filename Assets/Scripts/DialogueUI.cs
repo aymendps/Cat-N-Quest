@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using UnityEngine.UI;
 using UnityEngine;
 using TMPro;
 using DG.Tweening;
@@ -7,8 +8,8 @@ using DG.Tweening;
 public class DialogueUI : MonoBehaviour
 {
     public static DialogueUI instance;
-    public TextMeshProUGUI nameText;
     public TextMeshProUGUI sentenceText;
+    public Image sentenceTextPanel;
     public float dialogueOrthoSize;
     public float fadeInSpeed;
     public float fadeOutSpeed;
@@ -20,39 +21,28 @@ public class DialogueUI : MonoBehaviour
         initialOrthoSize = Camera.main.orthographicSize;
     }
 
-    public void ShowName(string actorName)
-    {
-        nameText.text = actorName + ':';
-        StartCoroutine(Fading.FadeInText(fadeInSpeed, nameText));
-    }
-
-    public void HideName()
-    {
-        StartCoroutine(Fading.FadeOutText(fadeOutSpeed, nameText));
-    }
-
-    public void ShowSentence(string sentence)
+    private void ShowSentence(string sentence)
     {
         sentenceText.text = sentence;
         StartCoroutine(Fading.FadeInText(fadeInSpeed, sentenceText));
+        StartCoroutine(Fading.FadeInImage(fadeInSpeed, sentenceTextPanel));
     }
 
-    public void HideSentence()
+    private void HideSentence()
     {
         StartCoroutine(Fading.FadeOutText(fadeOutSpeed, sentenceText));
+        StartCoroutine(Fading.FadeOutImage(fadeOutSpeed, sentenceTextPanel));
     }
 
-    public void ShowDialogue(string actorName, string sentence)
+    public void ShowDialogue(string sentence)
     {
         Camera.main.DOOrthoSize(dialogueOrthoSize, fadeInSpeed);
-        ShowName(actorName);
         ShowSentence(sentence);
     }
 
     public void HideDialogue()
     {
         Camera.main.DOOrthoSize(initialOrthoSize, fadeOutSpeed);
-        HideName();
         HideSentence();
     }
 }

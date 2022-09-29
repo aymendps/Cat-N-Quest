@@ -2,20 +2,22 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using DG.Tweening;
+using TMPro;
 
 public class QuestDrop : Interactable
 {
     [Header("Quest Drop Configuration")]
     public string dropName;
+    public TextMesh textMesh;
     public SpriteRenderer spriteRenderer;
     public float wobbleOffset = 0.2F;
     public float wobbleSpeed = 0.5F;
 
     private Sequence sequence;
-    private string pickUpSentence = "E- Pick up";
 
     private void Awake()
     {
+        textMesh.text = dropName;
         sequence = DOTween.Sequence();
         sequence.Append(
             spriteRenderer.transform.DOMoveY(
@@ -42,6 +44,7 @@ public class QuestDrop : Interactable
     {
         // Debug.Log("Interacted with " + gameObject.name);
         PlayerCharacterController.player.AddToInventory(dropName);
+        transform.DOKill();
         sequence.Kill();
         Destroy(gameObject);
     }
@@ -51,7 +54,7 @@ public class QuestDrop : Interactable
         base.OnTriggerEnter2D(other);
         if (other.tag == playerTag && isInteractable)
         {
-            DialogueUI.instance.ShowDialogue(dropName, pickUpSentence);
+            StartCoroutine(Fading.FadeInText(0.3f, textMesh));
         }
     }
 
@@ -60,7 +63,7 @@ public class QuestDrop : Interactable
         base.OnTriggerExit2D(other);
         if (other.tag == playerTag && isInteractable)
         {
-            DialogueUI.instance.HideDialogue();
+            StartCoroutine(Fading.FadeOutText(0.3f, textMesh));
         }
     }
 }

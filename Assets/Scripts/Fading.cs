@@ -73,28 +73,18 @@ public class Fading
 
     public static IEnumerator FadeInImage(float speed, Image image)
     {
-        while (image.color.a < 1.0f)
+        if (image.color.a != 1.0f)
         {
-            image.color = new Color(
-                image.color.r,
-                image.color.g,
-                image.color.b,
-                image.color.a + (Time.deltaTime * speed)
-            );
+            image.DOColor(new Color(image.color.r, image.color.g, image.color.b, 1.0f), speed);
             yield return null;
         }
     }
 
     public static IEnumerator FadeOutImage(float speed, Image image)
     {
-        while (image.color.a > 0.0f)
+        if (image.color.a != 0.0f)
         {
-            image.color = new Color(
-                image.color.r,
-                image.color.g,
-                image.color.b,
-                image.color.a - (Time.deltaTime * speed)
-            );
+            image.DOColor(new Color(image.color.r, image.color.g, image.color.b, 0.0f), speed);
             yield return null;
         }
     }

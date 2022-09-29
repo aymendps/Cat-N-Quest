@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using TMPro;
 
 #if UNITY_EDITOR
 using UnityEditor;
@@ -15,7 +16,7 @@ public enum PropsActionType
 public class PropsAction : Interactable
 {
     public string actionName;
-    public string actionSentence;
+    public TextMesh textMesh;
     public PropsActionType actionType;
 
     [HideInInspector]
@@ -40,6 +41,7 @@ public class PropsAction : Interactable
 
     private void Awake()
     {
+        textMesh.text = actionName;
         audioSource = GetComponent<AudioSource>();
     }
 
@@ -54,7 +56,7 @@ public class PropsAction : Interactable
 
     private void ShowAdditionalText()
     {
-        Debug.Log(textToShow);
+        DialogueUI.instance.ShowDialogue(textToShow);
     }
 
     public override void Use()
@@ -77,7 +79,7 @@ public class PropsAction : Interactable
 
         if (other.tag == playerTag && isInteractable)
         {
-            Debug.Log("Props Interactable: " + actionName);
+            StartCoroutine(Fading.FadeInText(0.3f, textMesh));
         }
     }
 
@@ -85,7 +87,11 @@ public class PropsAction : Interactable
     {
         base.OnTriggerExit2D(other);
 
-        if (other.tag == playerTag && isInteractable) { }
+        if (other.tag == playerTag && isInteractable)
+        {
+            StartCoroutine(Fading.FadeOutText(0.3f, textMesh));
+            DialogueUI.instance.HideDialogue();
+        }
     }
 }
 
