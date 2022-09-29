@@ -14569,7 +14569,7 @@ GameObject:
   - component: {fileID: 9135014150931047564}
   - component: {fileID: 9135811785154262716}
   m_Layer: 20
-  m_Name: PF Village Props - Campfire T
+  m_Name: PF Village Props - Campfire Lit
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
