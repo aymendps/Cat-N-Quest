@@ -2,14 +2,18 @@
 using System.Collections.Generic;
 using UnityEngine.InputSystem;
 using UnityEngine;
+using DG.Tweening;
 
 public class PlayerCharacterController : MonoBehaviour
 {
     public static PlayerCharacterController player;
 
+    [Header("Sprites Section")]
+    public SpriteRenderer angrySymbol;
+
     [Header("Movement Section")]
     public float speed;
-    public bool canMove;
+    public bool canMove = false;
 
     [Header("Audio Section")]
     public float volume;
@@ -22,6 +26,7 @@ public class PlayerCharacterController : MonoBehaviour
     private Vector2 direction;
     private Interactable currentInteractable;
     private List<string> inventory = new List<string>();
+    private Sequence angrySymbolSequence;
 
     public void SetCurrentInteractable(Interactable interactable)
     {
@@ -53,11 +58,23 @@ public class PlayerCharacterController : MonoBehaviour
         audioSource = GetComponent<AudioSource>();
         direction = Vector2.zero;
         meowIndex = 0;
+        angrySymbolSequence = DOTween.Sequence();
+        angrySymbolSequence.Append(
+            angrySymbol.transform.DOScale(new Vector3(1.2f, 1.92f, 1), 0.5f)
+        );
+        angrySymbolSequence.Append(angrySymbol.transform.DOScale(new Vector3(1, 1.6f, 1), 0.5f));
+        angrySymbolSequence.SetLoops(-1);
+        angrySymbolSequence.Pause();
     }
 
     private void Update()
     {
         UpdatePosition();
+    }
+
+    public void SetAsleep(bool isAsleep)
+    {
+        animator.SetBool("InMainMenu", isAsleep);
     }
 
     private void SetAnimatorValues()
@@ -85,8 +102,30 @@ public class PlayerCharacterController : MonoBehaviour
 
     private void UpdatePosition()
     {
-        SetAnimatorValues();
-        rb.velocity = speed * direction;
+        if (canMove)
+        {
+            SetAnimatorValues();
+            rb.velocity = speed * direction;
+        }
+    }
+
+    public void TransitionFromMainMenu()
+    {
+        SetAsleep(false);
+        canMove = true;
+        GetComponent<PlayerInput>().SwitchCurrentActionMap("Player");
+        ShowAngrySymbol();
+    }
+
+    public void ShowAngrySymbol()
+    {
+        angrySymbol.enabled = true;
+        angrySymbolSequence.Play();
+    }
+
+    public void HideAngrySymbol()
+    {
+        angrySymbol.enabled = false;
     }
 
     public void OnMove(InputValue value)

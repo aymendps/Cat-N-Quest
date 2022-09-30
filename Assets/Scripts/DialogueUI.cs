@@ -10,15 +10,14 @@ public class DialogueUI : MonoBehaviour
     public static DialogueUI instance;
     public TextMeshProUGUI sentenceText;
     public Image sentenceTextPanel;
+    public float initialOrthoSize;
     public float dialogueOrthoSize;
     public float fadeInSpeed;
     public float fadeOutSpeed;
-    private float initialOrthoSize;
 
     private void Awake()
     {
         instance = this;
-        initialOrthoSize = Camera.main.orthographicSize;
     }
 
     private void ShowSentence(string sentence)
