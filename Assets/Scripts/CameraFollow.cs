@@ -1,34 +1,47 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem;
+using DG.Tweening;
 
 public class CameraFollow : MonoBehaviour
 {
-    public Transform target;
+    public Transform player;
     public float lerpSpeed = 1.0f;
-
-    private Vector3 offset;
-
-    private Vector3 targetPos;
+    public float transitionSpeed = 1.0f;
+    public float transitionOrthoSize = 5;
+    private bool isInMainMenu = true;
 
     private void Start()
     {
-        if (target == null)
+        if (player == null)
             return;
-
-        offset = transform.position - target.position;
     }
 
     private void Update()
     {
-        if (target == null)
+        if (player == null || isInMainMenu)
             return;
 
-        targetPos = target.position + offset;
         transform.position = Vector3.Lerp(
             transform.position,
-            targetPos,
+            player.position,
             lerpSpeed * Time.deltaTime
         );
+    }
+
+    public void TransitionFromMainMenu()
+    {
+        transform.DOMove(
+            new Vector3(player.position.x, player.position.y, transform.position.z),
+            transitionSpeed
+        );
+        Camera.main
+            .DOOrthoSize(transitionOrthoSize, transitionSpeed)
+            .OnComplete(() =>
+            {
+                PlayerCharacterController.player.TransitionFromMainMenu();
+                isInMainMenu = false;
+            });
     }
 }
