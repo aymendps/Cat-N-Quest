@@ -39,12 +39,14 @@ public class PlayerCharacterController : MonoBehaviour
     public void AddToInventory(string interactableName)
     {
         inventory.Add(interactableName);
+        InventoryUI.instance.UpdateInventoryGrid();
         Debug.Log("Added " + interactableName + " to player inventory");
     }
 
     public void RemoveFromInventory(string interactableName)
     {
         inventory.Remove(interactableName);
+        InventoryUI.instance.UpdateInventoryGrid();
         Debug.Log("Removed " + interactableName + " from player inventory");
     }
 
