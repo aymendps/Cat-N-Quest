@@ -10,9 +10,11 @@ public class PlayerCharacterController : MonoBehaviour
 
     [Header("Sprites Section")]
     public SpriteRenderer angrySymbol;
+    public ParticleSystem asleepParticleSystem;
 
     [Header("Movement Section")]
-    public float speed;
+    public float walkingSpeed;
+    public float runningSpeed;
     public bool canMove = false;
 
     [Header("Audio Section")]
@@ -27,6 +29,7 @@ public class PlayerCharacterController : MonoBehaviour
     private Interactable currentInteractable;
     private List<string> inventory = new List<string>();
     private Sequence angrySymbolSequence;
+    private bool isRunning = false;
 
     public void SetCurrentInteractable(Interactable interactable)
     {
@@ -48,6 +51,11 @@ public class PlayerCharacterController : MonoBehaviour
     public bool isInInventory(string interactableName)
     {
         return inventory.Contains(interactableName);
+    }
+
+    private void OnValidate()
+    {
+        runningSpeed = runningSpeed < walkingSpeed ? walkingSpeed : runningSpeed;
     }
 
     private void Awake()
@@ -105,13 +113,13 @@ public class PlayerCharacterController : MonoBehaviour
         if (canMove)
         {
             SetAnimatorValues();
-            rb.velocity = speed * direction;
+
+            rb.velocity = isRunning ? runningSpeed * direction : walkingSpeed * direction;
         }
     }
 
     public void TransitionFromMainMenu()
     {
-        SetAsleep(false);
         canMove = true;
         GetComponent<PlayerInput>().SwitchCurrentActionMap("Player");
     }
@@ -127,6 +135,15 @@ public class PlayerCharacterController : MonoBehaviour
         angrySymbol.enabled = false;
     }
 
+    public void PlayMeow()
+    {
+        if (!audioSource.isPlaying && canMove)
+        {
+            audioSource.PlayOneShot(meowSoundEffects[meowIndex % meowSoundEffects.Count], volume);
+            meowIndex++;
+        }
+    }
+
     public void OnMove(InputValue value)
     {
         if (canMove)
@@ -139,12 +156,42 @@ public class PlayerCharacterController : MonoBehaviour
         }
     }
 
-    public void OnMeow(InputValue value)
+    // public void OnDash(InputValue value)
+    // {
+    //     if (canMove && canDash)
+    //     {
+    //         int dir = animator.GetInteger("Direction");
+    //         switch (dir)
+    //         {
+    //             case 0:
+    //                 rb.DOMove((Vector2)transform.position + dashRange * Vector2.down, dashDuration);
+    //                 break;
+
+    //             case 1:
+    //                 rb.DOMove((Vector2)transform.position + dashRange * Vector2.up, dashDuration);
+    //                 break;
+
+    //             case 2:
+    //                 rb.DOMove(
+    //                     (Vector2)transform.position + dashRange * Vector2.right,
+    //                     dashDuration
+    //                 );
+    //                 break;
+
+    //             case 3:
+    //                 rb.DOMove((Vector2)transform.position + dashRange * Vector2.left, dashDuration);
+    //                 break;
+    //         }
+
+    //         StartCoroutine(HandleDashCooldown());
+    //     }
+    // }
+
+    public void OnRun(InputValue value)
     {
-        if (!audioSource.isPlaying && canMove)
+        if (canMove)
         {
-            audioSource.PlayOneShot(meowSoundEffects[meowIndex % meowSoundEffects.Count], volume);
-            meowIndex++;
+            isRunning = value.Get<float>() > 0.5f;
         }
     }
 
@@ -152,6 +199,8 @@ public class PlayerCharacterController : MonoBehaviour
     {
         if (canMove)
         {
+            PlayMeow();
+
             if (currentInteractable)
             {
                 currentInteractable.Use();

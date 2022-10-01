@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 2927455932450297346}
   - component: {fileID: 6223746544896227164}
   - component: {fileID: 6295016638095607784}
+  - component: {fileID: 3443405285174855955}
   m_Layer: 0
   m_Name: Layer Trigger
   m_TagString: Untagged
@@ -64,11 +65,32 @@ EdgeCollider2D:
   m_EdgeRadius: 0
   m_Points:
   - {x: -0.7544733, y: 0.025878906}
-  - {x: 0.7285948, y: 0.025878906}
+  - {x: 0.77247524, y: 0.025878906}
   m_AdjacentStartPoint: {x: 0, y: 0}
   m_AdjacentEndPoint: {x: 0, y: 0}
   m_UseAdjacentStartPoint: 0
   m_UseAdjacentEndPoint: 0
+--- !u!50 &3443405285174855955
+Rigidbody2D:
+  serializedVersion: 4
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3256064665225810532}
+  m_BodyType: 2
+  m_Simulated: 1
+  m_UseFullKinematicContacts: 0
+  m_UseAutoMass: 0
+  m_Mass: 1
+  m_LinearDrag: 0
+  m_AngularDrag: 0.05
+  m_GravityScale: 1
+  m_Material: {fileID: 0}
+  m_Interpolate: 0
+  m_SleepingMode: 1
+  m_CollisionDetection: 0
+  m_Constraints: 0
 --- !u!1 &6075975974917516961
 GameObject:
   m_ObjectHideFlags: 0
@@ -456,6 +478,7 @@ GameObject:
   - component: {fileID: 6075975976084253373}
   - component: {fileID: 4442653431165992162}
   - component: {fileID: 4020305838961901639}
+  - component: {fileID: 8543668237911317000}
   m_Layer: 0
   m_Name: Layer Trigger
   m_TagString: Untagged
@@ -509,8 +532,29 @@ EdgeCollider2D:
   m_EdgeRadius: 0
   m_Points:
   - {x: -0.7544733, y: 0.025878906}
-  - {x: 0.7285948, y: 0.025878906}
+  - {x: 0.7761297, y: 0.025878906}
   m_AdjacentStartPoint: {x: 0, y: 0}
   m_AdjacentEndPoint: {x: 0, y: 0}
   m_UseAdjacentStartPoint: 0
   m_UseAdjacentEndPoint: 0
+--- !u!50 &8543668237911317000
+Rigidbody2D:
+  serializedVersion: 4
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6075975976084253374}
+  m_BodyType: 2
+  m_Simulated: 1
+  m_UseFullKinematicContacts: 0
+  m_UseAutoMass: 0
+  m_Mass: 1
+  m_LinearDrag: 0
+  m_AngularDrag: 0.05
+  m_GravityScale: 1
+  m_Material: {fileID: 0}
+  m_Interpolate: 0
+  m_SleepingMode: 1
+  m_CollisionDetection: 0
+  m_Constraints: 0

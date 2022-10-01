@@ -22,7 +22,7 @@ public class CameraFollow : MonoBehaviour
 
         transform.position = Vector3.Lerp(
             transform.position,
-            player.position,
+            new Vector3(player.position.x, player.position.y, transform.position.z),
             lerpSpeed * Time.deltaTime
         );
     }

@@ -7,18 +7,32 @@ using DG.Tweening;
 
 public class MainMenuUI : MonoBehaviour
 {
+    [System.Serializable]
+    public struct NoiseClip
+    {
+        public AudioClip audioClip;
+        public float waitBeforePlaying;
+    }
+
     public Image gameTitle;
     public TextMeshProUGUI playButtonText;
     public TextMeshProUGUI exitButtonText;
     public CameraFollow cameraFollowScript;
+    public List<NoiseClip> noiseClips = new List<NoiseClip>();
     public float fadeOutSpeed;
+    public float cameraShakeDuration = 0.2f;
+    public float cameraShakeStrength = 3;
     public float transitionSpeed = 1.0f;
     public float transitionOrthoSize = 5;
     private Sequence cameraAnimation;
     private bool started = false;
+    private AudioSource audioSource;
+    private float initialAsleepPSRateOverTime = 1.2f;
 
     private void Awake()
     {
+        audioSource = GetComponent<AudioSource>();
+
         cameraAnimation = DOTween.Sequence();
 
         cameraAnimation.Append(
@@ -36,8 +50,8 @@ public class MainMenuUI : MonoBehaviour
 
         cameraAnimation.OnComplete(() =>
         {
-            PlayerCharacterController.player.TransitionFromMainMenu();
             cameraFollowScript.isInMainMenu = false;
+            PlayerCharacterController.player.TransitionFromMainMenu();
         });
 
         cameraAnimation.Pause();
@@ -51,12 +65,38 @@ public class MainMenuUI : MonoBehaviour
         Application.Quit();
     }
 
-    public void AnimateCamera()
+    IEnumerator MainMenuTransition()
     {
+        var emission = PlayerCharacterController.player.asleepParticleSystem.emission;
+
+        foreach (NoiseClip clip in noiseClips)
+        {
+            yield return new WaitForSeconds(clip.waitBeforePlaying);
+            audioSource.PlayOneShot(clip.audioClip);
+            Camera.main.DOShakePosition(cameraShakeDuration, cameraShakeStrength);
+            initialAsleepPSRateOverTime -= 0.25f;
+            emission.rateOverTime = initialAsleepPSRateOverTime;
+        }
+
+        PlayerCharacterController.player.SetAsleep(false);
+        PlayerCharacterController.player.ShowAngrySymbol();
+        PlayerCharacterController.player.asleepParticleSystem.gameObject.SetActive(false);
+
+        yield return new WaitForSeconds(cameraShakeDuration * 2);
+
         cameraAnimation.Play();
+
+        yield return new WaitForSeconds(transitionSpeed * 2);
+
+        PlayerCharacterController.player.HideAngrySymbol();
     }
 
-    IEnumerator DisableUI()
+    void PlayMainMenuTransition()
+    {
+        StartCoroutine(MainMenuTransition());
+    }
+
+    IEnumerator DisableUIRoutine()
     {
         StartCoroutine(Fading.FadeOutImage(fadeOutSpeed, gameTitle));
         StartCoroutine(Fading.FadeOutText(fadeOutSpeed, playButtonText));
@@ -67,13 +107,18 @@ public class MainMenuUI : MonoBehaviour
         exitButtonText.transform.parent.gameObject.SetActive(false);
     }
 
+    void DisableUI()
+    {
+        StartCoroutine(DisableUIRoutine());
+    }
+
     public void HandlePlayButton()
     {
         if (started)
             return;
 
         started = true;
-        StartCoroutine(DisableUI());
-        AnimateCamera();
+        DisableUI();
+        PlayMainMenuTransition();
     }
 }
