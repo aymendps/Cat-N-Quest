@@ -114,7 +114,6 @@ public class PlayerCharacterController : MonoBehaviour
         SetAsleep(false);
         canMove = true;
         GetComponent<PlayerInput>().SwitchCurrentActionMap("Player");
-        ShowAngrySymbol();
     }
 
     public void ShowAngrySymbol()
