@@ -17,9 +17,13 @@ public class MainMenuUI : MonoBehaviour
     public Image gameTitle;
     public TextMeshProUGUI playButtonText;
     public TextMeshProUGUI exitButtonText;
+    public Image trackerBorder;
+    public Image trackerFilled;
+    public TextMeshProUGUI trackerPercentage;
     public CameraFollow cameraFollowScript;
     public List<NoiseClip> noiseClips = new List<NoiseClip>();
-    public float fadeOutSpeed;
+    public float fadeOutSpeed = 2;
+    public float fadeInSpeed = 1;
     public float cameraShakeDuration = 0.2f;
     public float cameraShakeStrength = 3;
     public float transitionSpeed = 1.0f;
@@ -89,6 +93,10 @@ public class MainMenuUI : MonoBehaviour
         yield return new WaitForSeconds(transitionSpeed * 2);
 
         PlayerCharacterController.player.HideAngrySymbol();
+
+        StartCoroutine(Fading.FadeInImage(fadeInSpeed, trackerBorder));
+        StartCoroutine(Fading.FadeInImage(fadeInSpeed, trackerFilled));
+        StartCoroutine(Fading.FadeInText(fadeInSpeed, trackerPercentage));
     }
 
     void PlayMainMenuTransition()
