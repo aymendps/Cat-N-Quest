@@ -68,6 +68,9 @@ public class Quest : MonoBehaviour
                     Quaternion.identity
                 );
             }
+
+            QuestCompletionTracker.instance.IncrementCompletedQuests();
+
             isFinished = true;
         }
         else

@@ -1,18 +1,32 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class InventoryUI : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
+    public static InventoryUI instance;
+    public GameObject inventoryGrid;
+    private Transform[] children;
+
+    private void Awake()
     {
-        
+        instance = this;
+        children = inventoryGrid.GetComponentsInChildren<Transform>(true);
     }
 
-    // Update is called once per frame
-    void Update()
+    public void UpdateInventoryGrid()
     {
-        
+        foreach (Transform child in children)
+        {
+            if (PlayerCharacterController.player.isInInventory(child.name))
+            {
+                child.gameObject.SetActive(true);
+            }
+            else
+            {
+                child.gameObject.SetActive(false);
+            }
+        }
     }
 }
