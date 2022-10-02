@@ -14,9 +14,15 @@ public class Quest : MonoBehaviour
     {
         public int stageIndex;
         public NonPlayableCharacter npc;
+
+        [TextArea]
         public string dialogue;
         public bool sayWhileWaiting;
         public float duration;
+        public bool shouldGiveItem;
+        public string itemToGive;
+        public bool shouldTakeItem;
+        public string itemToTake;
     }
 
     [System.Serializable]
@@ -146,6 +152,16 @@ public class Quest : MonoBehaviour
                     d.npc.LookAtPlayer();
                     d.npc.SaySentence(d.dialogue);
                     yield return new WaitForSeconds(d.duration);
+
+                    if (d.shouldGiveItem)
+                    {
+                        PlayerCharacterController.player.AddToInventory(d.itemToGive);
+                    }
+
+                    if (d.shouldTakeItem)
+                    {
+                        PlayerCharacterController.player.RemoveFromInventory(d.itemToTake);
+                    }
                 }
             }
             AdvanceToNextStage();

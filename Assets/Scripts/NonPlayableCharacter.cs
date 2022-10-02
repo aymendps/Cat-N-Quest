@@ -47,6 +47,7 @@ public class NonPlayableCharacter : Interactable
     [Header("NPC AI")]
     public NavMeshAgent navMeshAgent;
     public bool startMovementRoutine;
+    public bool loopMovementRoutine = true;
     public List<Vector2> positionsInOrder = new List<Vector2>();
     public float timeBetweenPositions;
 
@@ -244,9 +245,21 @@ public class NonPlayableCharacter : Interactable
             )
             {
                 routinePositionIndex++;
-                if (routinePositionIndex >= positionsInOrder.Count)
+
+                if (routinePositionIndex >= positionsInOrder.Count && loopMovementRoutine)
                 {
                     routinePositionIndex = 0;
+                }
+                else
+                {
+                    if (movementRoutine != null)
+                    {
+                        startMovementRoutine = false;
+                        navMeshAgent.isStopped = true;
+                        canMove = false;
+                        StopCoroutine(movementRoutine);
+                        return;
+                    }
                 }
 
                 if (movementRoutine != null)

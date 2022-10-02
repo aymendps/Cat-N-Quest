@@ -23,7 +23,7 @@ public class InventoryUI : MonoBehaviour
             {
                 child.gameObject.SetActive(true);
             }
-            else
+            else if (child.name != inventoryGrid.name)
             {
                 child.gameObject.SetActive(false);
             }
