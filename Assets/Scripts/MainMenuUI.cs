@@ -20,6 +20,8 @@ public class MainMenuUI : MonoBehaviour
     public Image trackerBorder;
     public Image trackerFilled;
     public TextMeshProUGUI trackerPercentage;
+    public TextMeshProUGUI controlsText;
+    public Quest startingQuest;
     public CameraFollow cameraFollowScript;
     public List<NoiseClip> noiseClips = new List<NoiseClip>();
     public float fadeOutSpeed = 2;
@@ -32,6 +34,7 @@ public class MainMenuUI : MonoBehaviour
     private bool started = false;
     private AudioSource audioSource;
     private float initialAsleepPSRateOverTime = 1.2f;
+    private bool isShown = false;
 
     private void Awake()
     {
@@ -59,6 +62,15 @@ public class MainMenuUI : MonoBehaviour
         });
 
         cameraAnimation.Pause();
+    }
+
+    private void Update()
+    {
+        if (startingQuest.GetCurrentStage() > 0 && isShown == false)
+        {
+            ShowQuestCompletionTracker();
+            isShown = true;
+        }
     }
 
     public void HandleExitButton()
@@ -94,6 +106,11 @@ public class MainMenuUI : MonoBehaviour
 
         PlayerCharacterController.player.HideAngrySymbol();
 
+        StartCoroutine(Fading.FadeInText(fadeInSpeed, controlsText));
+    }
+
+    public void ShowQuestCompletionTracker()
+    {
         StartCoroutine(Fading.FadeInImage(fadeInSpeed, trackerBorder));
         StartCoroutine(Fading.FadeInImage(fadeInSpeed, trackerFilled));
         StartCoroutine(Fading.FadeInText(fadeInSpeed, trackerPercentage));

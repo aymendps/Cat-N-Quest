@@ -65,7 +65,7 @@ GameObject:
   - component: {fileID: 1582642249900303875}
   m_Layer: 0
   m_Name: NPC Template With Quest
-  m_TagString: Untagged
+  m_TagString: NPC
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -214,7 +214,7 @@ GameObject:
   - component: {fileID: 780027094775722957}
   m_Layer: 20
   m_Name: Core
-  m_TagString: Untagged
+  m_TagString: NPC
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -251,24 +251,25 @@ MonoBehaviour:
   devNotes: 
   radius: 2
   playerTag: Player
-  isInteractable: 1
-  NPCName: Emir With Quest
+  isInteractable: 0
+  NPCName: Felipe (Ghost)
   textMesh: {fileID: 8509955264639140307}
-  currentEmotion: 0
+  currentEmotion: 1
   sadNPCView:
-    front: {fileID: -1748592876, guid: 2ddd16ea6c704f14db68b307f64a8072, type: 3}
-    side: {fileID: 2088270869, guid: 2ddd16ea6c704f14db68b307f64a8072, type: 3}
-    back: {fileID: -1321431388, guid: 2ddd16ea6c704f14db68b307f64a8072, type: 3}
+    front: {fileID: -870808742, guid: f757eb2ceb85dd744b44223d755b0895, type: 3}
+    side: {fileID: -813264151, guid: f757eb2ceb85dd744b44223d755b0895, type: 3}
+    back: {fileID: 879853835, guid: f757eb2ceb85dd744b44223d755b0895, type: 3}
   happyNPCView:
-    front: {fileID: 1139082654, guid: 4bf8cf8dfa6dcbc4e8712486cb34a41b, type: 3}
-    side: {fileID: -1372139150, guid: 4bf8cf8dfa6dcbc4e8712486cb34a41b, type: 3}
-    back: {fileID: 204082097, guid: 4bf8cf8dfa6dcbc4e8712486cb34a41b, type: 3}
-  initialView: 1
+    front: {fileID: -870808742, guid: f757eb2ceb85dd744b44223d755b0895, type: 3}
+    side: {fileID: -813264151, guid: f757eb2ceb85dd744b44223d755b0895, type: 3}
+    back: {fileID: 879853835, guid: f757eb2ceb85dd744b44223d755b0895, type: 3}
+  initialView: 0
   dialogueVolume: 0
   defaultSentence: Default Sentence Quest
   defaultAudioClip: {fileID: 0}
   navMeshAgent: {fileID: 1582642249814973507}
   startMovementRoutine: 0
+  loopMovementRoutine: 1
   positionsInOrder:
   - {x: 2, y: 2}
   - {x: 7, y: 4}

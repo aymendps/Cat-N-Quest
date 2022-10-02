@@ -250,7 +250,7 @@ public class NonPlayableCharacter : Interactable
                 {
                     routinePositionIndex = 0;
                 }
-                else
+                else if (routinePositionIndex >= positionsInOrder.Count)
                 {
                     if (movementRoutine != null)
                     {

@@ -32,6 +32,12 @@ public class QuestCompletionTracker : MonoBehaviour
         else
         {
             completionPercentage = completedQuests / quests.Count;
+
+            if (completedQuests == quests.Count)
+            {
+                PlayerCharacterController.player.AddToInventory("Finished Game");
+            }
+
             DOTween.To(
                 () => trackerFilled.fillAmount,
                 x => trackerFilled.fillAmount = x,

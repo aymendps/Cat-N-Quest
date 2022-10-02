@@ -172,7 +172,7 @@ public class Quest : MonoBehaviour
 
     public void StartQuestStage()
     {
-        PlayerCharacterController.player.canMove = false;
+        PlayerCharacterController.player.SetCannotMove();
         List<Dialogue> list = dialogueList.FindAll(d => d.stageIndex == currentStage);
         StartCoroutine(DialogueSequence(list));
     }

@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 320460887509234689}
   m_Layer: 0
   m_Name: NPC Template No Agent
-  m_TagString: Untagged
+  m_TagString: NPC
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -160,7 +160,7 @@ GameObject:
   - component: {fileID: 4228909173853705118}
   m_Layer: 20
   m_Name: Core
-  m_TagString: Untagged
+  m_TagString: NPC
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -215,6 +215,7 @@ MonoBehaviour:
   defaultAudioClip: {fileID: 0}
   navMeshAgent: {fileID: 0}
   startMovementRoutine: 0
+  loopMovementRoutine: 1
   positionsInOrder: []
   timeBetweenPositions: 0
 --- !u!212 &6168416360745002957

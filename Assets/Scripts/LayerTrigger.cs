@@ -9,11 +9,16 @@ public class LayerTrigger : MonoBehaviour
     public string layer;
     public string sortingLayer;
 
-    IEnumerator ChangeLayer(Collider2D other) {
+    private Coroutine routine = null;
+    private Coroutine playerRoutine = null;
+    private Coroutine npcRoutine = null;
 
+    IEnumerator ChangeLayer(Collider2D other, string tag)
+    {
         other.gameObject.layer = LayerMask.NameToLayer(layer);
 
-        if(other.gameObject.tag != "Player") {
+        if (other.gameObject.tag != "Player")
+        {
             yield return new WaitForSeconds(0.3F);
         }
 
@@ -23,10 +28,43 @@ public class LayerTrigger : MonoBehaviour
         {
             sr.sortingLayerName = sortingLayer;
         }
+
+        if (tag == "NPC")
+        {
+            npcRoutine = null;
+        }
+        else if (tag == "Player")
+        {
+            playerRoutine = null;
+        }
+        else
+        {
+            routine = null;
+        }
     }
 
-    private void OnTriggerExit2D(Collider2D other)
+    private void OnTriggerStay2D(Collider2D other)
     {
-        StartCoroutine(ChangeLayer(other));
+        if (other.gameObject.layer != LayerMask.NameToLayer(layer) && routine == null)
+        {
+            if (other.gameObject.tag == "NPC")
+            {
+                if (other.GetType() == typeof(BoxCollider2D))
+                {
+                    Debug.Log(layer);
+                    npcRoutine = StartCoroutine(ChangeLayer(other, "NPC"));
+                }
+            }
+            else if (other.gameObject.tag == "Player")
+            {
+                Debug.Log(layer);
+                playerRoutine = StartCoroutine(ChangeLayer(other, "Player"));
+            }
+            else
+            {
+                Debug.Log(layer);
+                routine = StartCoroutine(ChangeLayer(other, other.tag));
+            }
+        }
     }
 }

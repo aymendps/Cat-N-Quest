@@ -31,6 +31,13 @@ public class PlayerCharacterController : MonoBehaviour
     private Sequence angrySymbolSequence;
     private bool isRunning = false;
 
+    public void SetCannotMove()
+    {
+        canMove = false;
+        direction = Vector2.zero;
+        rb.velocity = Vector2.zero;
+    }
+
     public void SetCurrentInteractable(Interactable interactable)
     {
         currentInteractable = interactable;
