@@ -54,8 +54,8 @@ public class NonPlayableCharacter : Interactable
     private NPCView activeNPCView;
     private AudioSource audioSource;
     private SpriteRenderer spriteRenderer;
-    private bool canMove = false;
-    private Coroutine movementRoutine = null;
+    protected bool canMove = false;
+    protected Coroutine movementRoutine = null;
     private int routinePositionIndex = 0;
 
     public void Awake()
@@ -121,6 +121,10 @@ public class NonPlayableCharacter : Interactable
     {
         currentEmotion = emotion;
         SetActiveNPCView();
+        if (!canMove)
+        {
+            SetInitialView();
+        }
     }
 
     public void SaySentence(string sentence)
@@ -302,7 +306,7 @@ public class NonPlayableCharacter : Interactable
     public override void OnTriggerExit2D(Collider2D other)
     {
         base.OnTriggerExit2D(other);
-        if (other.tag == playerTag)
+        if (other.tag == playerTag && PlayerCharacterController.player.canMove)
         {
             SetInitialView();
 

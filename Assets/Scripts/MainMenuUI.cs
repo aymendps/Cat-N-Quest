@@ -69,6 +69,7 @@ public class MainMenuUI : MonoBehaviour
         if (startingQuest.GetCurrentStage() > 0 && isShown == false)
         {
             ShowQuestCompletionTracker();
+            startingQuest.dialogueList[0].npc.SetIsInteractable(true);
             isShown = true;
         }
     }

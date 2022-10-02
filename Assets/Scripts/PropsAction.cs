@@ -52,6 +52,9 @@ public class PropsAction : Interactable
             transform.position + (Vector3)itemPositionOffset,
             Quaternion.identity
         );
+        isInteractable = false;
+        PlayerCharacterController.player.SetCurrentInteractable(null);
+        StartCoroutine(Fading.FadeOutText(0.3f, textMesh));
     }
 
     private void ShowAdditionalText()
@@ -87,7 +90,7 @@ public class PropsAction : Interactable
     {
         base.OnTriggerExit2D(other);
 
-        if (other.tag == playerTag && isInteractable)
+        if (other.tag == playerTag && isInteractable && PlayerCharacterController.player.canMove)
         {
             StartCoroutine(Fading.FadeOutText(0.3f, textMesh));
             DialogueUI.instance.HideDialogue();

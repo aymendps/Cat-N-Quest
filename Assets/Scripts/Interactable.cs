@@ -37,7 +37,7 @@ public abstract class Interactable : MonoBehaviour
 
     public virtual void OnTriggerExit2D(Collider2D other)
     {
-        if (other.tag == playerTag && isInteractable)
+        if (other.tag == playerTag && isInteractable && PlayerCharacterController.player.canMove)
         {
             PlayerCharacterController.player.SetCurrentInteractable(null);
         }

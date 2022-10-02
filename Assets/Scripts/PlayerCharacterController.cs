@@ -198,10 +198,7 @@ public class PlayerCharacterController : MonoBehaviour
 
     public void OnRun(InputValue value)
     {
-        if (canMove)
-        {
-            isRunning = value.Get<float>() > 0.5f;
-        }
+        isRunning = value.Get<float>() > 0.5f;
     }
 
     public void OnInteract(InputValue value)

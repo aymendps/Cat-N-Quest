@@ -61,7 +61,7 @@ public class QuestDrop : Interactable
     public override void OnTriggerExit2D(Collider2D other)
     {
         base.OnTriggerExit2D(other);
-        if (other.tag == playerTag && isInteractable)
+        if (other.tag == playerTag && isInteractable && PlayerCharacterController.player.canMove)
         {
             StartCoroutine(Fading.FadeOutText(0.3f, textMesh));
         }

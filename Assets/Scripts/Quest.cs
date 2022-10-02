@@ -60,6 +60,7 @@ public class Quest : MonoBehaviour
 
             foreach (Dialogue d in dialogueList)
             {
+                d.npc.ChangeEmotion(NPCEmotion.happy);
                 if (!d.npc.startMovementRoutine)
                 {
                     d.npc.StartMovementRoutine();

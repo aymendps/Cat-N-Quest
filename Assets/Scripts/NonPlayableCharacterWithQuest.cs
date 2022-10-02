@@ -20,6 +20,17 @@ public class NonPlayableCharacterWithQuest : NonPlayableCharacter
             bool shouldStartQuest = importantQuestStages.Contains(quest.GetCurrentStage());
             bool hasRequiredDrops = quest.PlayerHasRequiredDrops();
 
+            if (startMovementRoutine)
+            {
+                navMeshAgent.isStopped = true;
+                canMove = false;
+
+                if (movementRoutine != null)
+                {
+                    StopCoroutine(movementRoutine);
+                }
+            }
+
             if (shouldStartQuest && hasRequiredDrops)
             {
                 importantQuestStages.Remove(quest.GetCurrentStage());
