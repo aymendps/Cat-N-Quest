@@ -51,18 +51,15 @@ public class LayerTrigger : MonoBehaviour
             {
                 if (other.GetType() == typeof(BoxCollider2D))
                 {
-                    Debug.Log(layer);
                     npcRoutine = StartCoroutine(ChangeLayer(other, "NPC"));
                 }
             }
             else if (other.gameObject.tag == "Player")
             {
-                Debug.Log(layer);
                 playerRoutine = StartCoroutine(ChangeLayer(other, "Player"));
             }
             else
             {
-                Debug.Log(layer);
                 routine = StartCoroutine(ChangeLayer(other, other.tag));
             }
         }

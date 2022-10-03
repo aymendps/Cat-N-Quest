@@ -14567,7 +14567,7 @@ GameObject:
   m_Component:
   - component: {fileID: 9135014150931047571}
   - component: {fileID: 9135014150931047564}
-  - component: {fileID: 9135811785154262716}
+  - component: {fileID: 5541279174400609177}
   m_Layer: 20
   m_Name: PF Village Props - Campfire Lit
   m_TagString: Untagged
@@ -14645,8 +14645,8 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 1
---- !u!61 &9135811785154262716
-BoxCollider2D:
+--- !u!70 &5541279174400609177
+CapsuleCollider2D:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -14658,16 +14658,6 @@ BoxCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0.2071836}
-  m_SpriteTilingProperty:
-    border: {x: 0, y: 0, z: 0, w: 0}
-    pivot: {x: 0.5, y: 0}
-    oldSize: {x: 3.03125, y: 2.0625}
-    newSize: {x: 1.90625, y: 0.71875}
-    adaptiveTilingThreshold: 0.5
-    drawMode: 0
-    adaptiveTiling: 0
-  m_AutoTiling: 0
-  serializedVersion: 2
-  m_Size: {x: 1.5171833, y: 0.5720687}
-  m_EdgeRadius: 0
+  m_Offset: {x: -0.00000011629264, y: 1.024467}
+  m_Size: {x: 3.0312514, y: 1.9978089}
+  m_Direction: 1
