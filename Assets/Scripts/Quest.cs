@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 [System.Serializable]
 public class Quest : MonoBehaviour
@@ -14,7 +15,6 @@ public class Quest : MonoBehaviour
         [TextArea]
         public string dialogue;
         public bool sayWhileWaiting;
-        public float duration;
         public bool shouldGiveItem;
         public string itemToGive;
         public bool shouldTakeItem;
@@ -121,7 +121,7 @@ public class Quest : MonoBehaviour
             if (d.npc == npc && d.stageIndex == currentStage && d.sayWhileWaiting)
             {
                 npc.LookAtPlayer();
-                npc.SaySentence(d.dialogue);
+                npc.SaySentence(d.dialogue, false);
                 break;
             }
         }
@@ -142,7 +142,17 @@ public class Quest : MonoBehaviour
                 {
                     d.npc.LookAtPlayer();
                     d.npc.SaySentence(d.dialogue);
-                    yield return new WaitForSeconds(d.duration);
+
+                    Debug.Log("before skip");
+
+                    while (!PlayerCharacterController.player.skip)
+                    {
+                        yield return null;
+                    }
+
+                    Debug.Log("after skip");
+
+                    PlayerCharacterController.player.skip = false;
 
                     if (d.shouldGiveItem)
                     {
@@ -159,6 +169,9 @@ public class Quest : MonoBehaviour
         }
         DialogueUI.instance.HideDialogue();
         PlayerCharacterController.player.canMove = true;
+        PlayerCharacterController.player
+            .GetComponent<PlayerInput>()
+            .SwitchCurrentActionMap("Player");
     }
 
     public void StartQuestStage()

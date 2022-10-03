@@ -15,6 +15,9 @@ public class DialogueUI : MonoBehaviour
     public float fadeInSpeed;
     public float fadeOutSpeed;
 
+    [HideInInspector]
+    public bool isShown = false;
+
     private void Awake()
     {
         instance = this;
@@ -33,15 +36,20 @@ public class DialogueUI : MonoBehaviour
         StartCoroutine(Fading.FadeOutImage(fadeOutSpeed, sentenceTextPanel));
     }
 
-    public void ShowDialogue(string sentence)
+    public void ShowDialogue(string sentence, bool withOrthoAnimation = true)
     {
-        Camera.main.DOOrthoSize(dialogueOrthoSize, fadeInSpeed);
+        if (withOrthoAnimation)
+        {
+            Camera.main.DOOrthoSize(dialogueOrthoSize, fadeInSpeed);
+        }
         ShowSentence(sentence);
+        isShown = true;
     }
 
     public void HideDialogue()
     {
         Camera.main.DOOrthoSize(initialOrthoSize, fadeOutSpeed);
         HideSentence();
+        isShown = false;
     }
 }

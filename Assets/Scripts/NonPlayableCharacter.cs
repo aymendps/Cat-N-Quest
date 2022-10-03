@@ -127,15 +127,15 @@ public class NonPlayableCharacter : Interactable
         }
     }
 
-    public void SaySentence(string sentence)
+    public void SaySentence(string sentence, bool withOrthoAnimation = true)
     {
         // Debug.Log("NPC " + NPCName + " says: '" + sentence + "'");
-        DialogueUI.instance.ShowDialogue(sentence);
+        DialogueUI.instance.ShowDialogue(sentence, withOrthoAnimation);
     }
 
-    public void SaySentence(string sentence, AudioClip audioClip)
+    public void SaySentence(string sentence, AudioClip audioClip, bool withOrthoAnimation = true)
     {
-        SaySentence(sentence);
+        SaySentence(sentence, withOrthoAnimation);
 
         if (audioClip != null)
         {
@@ -290,7 +290,7 @@ public class NonPlayableCharacter : Interactable
         }
 
         LookAtPlayer();
-        SaySentence(defaultSentence, defaultAudioClip);
+        SaySentence(defaultSentence, defaultAudioClip, false);
     }
 
     public override void OnTriggerEnter2D(Collider2D other)

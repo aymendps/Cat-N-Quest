@@ -31,11 +31,15 @@ public class PlayerCharacterController : MonoBehaviour
     private Sequence angrySymbolSequence;
     private bool isRunning = false;
 
+    [HideInInspector]
+    public bool skip = false;
+
     public void SetCannotMove()
     {
         canMove = false;
         direction = Vector2.zero;
         rb.velocity = Vector2.zero;
+        GetComponent<PlayerInput>().SwitchCurrentActionMap("UI");
     }
 
     public void SetCurrentInteractable(Interactable interactable)
@@ -215,6 +219,14 @@ public class PlayerCharacterController : MonoBehaviour
             {
                 Debug.Log("No current interactable");
             }
+        }
+    }
+
+    public void OnSkip(InputValue value)
+    {
+        if (!canMove && DialogueUI.instance.isShown)
+        {
+            skip = true;
         }
     }
 }

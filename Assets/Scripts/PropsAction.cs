@@ -59,7 +59,7 @@ public class PropsAction : Interactable
 
     private void ShowAdditionalText()
     {
-        DialogueUI.instance.ShowDialogue(textToShow);
+        DialogueUI.instance.ShowDialogue(textToShow, false);
     }
 
     public override void Use()
