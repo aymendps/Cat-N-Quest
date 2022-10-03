@@ -39,7 +39,6 @@ public class PlayerCharacterController : MonoBehaviour
         canMove = false;
         direction = Vector2.zero;
         rb.velocity = Vector2.zero;
-        GetComponent<PlayerInput>().SwitchCurrentActionMap("UI");
     }
 
     public void SetCurrentInteractable(Interactable interactable)
@@ -224,9 +223,16 @@ public class PlayerCharacterController : MonoBehaviour
 
     public void OnSkip(InputValue value)
     {
-        if (!canMove && DialogueUI.instance.isShown)
+        if (!canMove)
         {
-            skip = true;
+            if (DialogueUI.instance.isShown)
+            {
+                skip = true;
+            }
+        }
+        else if (DialogueUI.instance.isShown)
+        {
+            DialogueUI.instance.HideDialogue();
         }
     }
 }

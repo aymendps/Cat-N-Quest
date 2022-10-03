@@ -143,14 +143,10 @@ public class Quest : MonoBehaviour
                     d.npc.LookAtPlayer();
                     d.npc.SaySentence(d.dialogue);
 
-                    Debug.Log("before skip");
-
                     while (!PlayerCharacterController.player.skip)
                     {
                         yield return null;
                     }
-
-                    Debug.Log("after skip");
 
                     PlayerCharacterController.player.skip = false;
 
@@ -169,9 +165,6 @@ public class Quest : MonoBehaviour
         }
         DialogueUI.instance.HideDialogue();
         PlayerCharacterController.player.canMove = true;
-        PlayerCharacterController.player
-            .GetComponent<PlayerInput>()
-            .SwitchCurrentActionMap("Player");
     }
 
     public void StartQuestStage()
