@@ -11,6 +11,7 @@ public class QuestCompletionTracker : MonoBehaviour
     public List<Quest> quests = new List<Quest>();
     public Image trackerBorder;
     public Image trackerFilled;
+    public TextMeshProUGUI endingText;
     public TextMeshProUGUI trackerPercentage;
 
     private float completedQuests = 0;
@@ -36,6 +37,7 @@ public class QuestCompletionTracker : MonoBehaviour
             if (completedQuests == quests.Count)
             {
                 PlayerCharacterController.player.AddToInventory("Finished Game");
+                StartCoroutine(Fading.FadeInText(1, endingText));
             }
 
             DOTween.To(

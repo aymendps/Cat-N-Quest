@@ -20,6 +20,7 @@ public class PlayerCharacterController : MonoBehaviour
     [Header("Audio Section")]
     public float volume;
     public List<AudioClip> meowSoundEffects;
+    public AudioClip skipSoundEffect;
 
     private Animator animator;
     private AudioSource audioSource;
@@ -228,11 +229,13 @@ public class PlayerCharacterController : MonoBehaviour
             if (DialogueUI.instance.isShown)
             {
                 skip = true;
+                audioSource.PlayOneShot(skipSoundEffect);
             }
         }
         else if (DialogueUI.instance.isShown)
         {
             DialogueUI.instance.HideDialogue();
+            audioSource.PlayOneShot(skipSoundEffect);
         }
     }
 }
